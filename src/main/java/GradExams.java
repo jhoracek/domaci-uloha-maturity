@@ -8,6 +8,12 @@ public class GradExams {
     private String className;
     private HashMap<String, Integer> grades;
 
+    public GradExams(String name, String surname, String className) {
+        this.name = name;
+        this.surname = surname;
+        this.className = className;
+    }
+
     public GradExams(String name, String surname, String className, HashMap<String, Integer> grades) {
         this.name = name;
         this.surname = surname;
