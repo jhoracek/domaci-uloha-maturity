@@ -24,6 +24,7 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Admin rights. (Just an example of more roles)");
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + choice);
         }
@@ -43,10 +44,34 @@ public class Main {
 
     public static void handleStudent() {
         System.out.println("As a student you can only check your exam results");
-        greetings("your");
-        System.out.println("Type your exact class [A/B/C]: ");
+        String[] stComplName = greetings("your");
+        System.out.println("Type your exact class [A][B][C]: ");
         String className = readUserString();
+        GradExams stResults = new GradExams(stComplName[0], stComplName[1], className);
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("Student " + stResults.getName() + " " + stResults.getSurname() + " from 4." +
+                stResults.getClassName() + " has not graduated yet. Try it later." );
+    }
 
+    public static String getOptionSub(String typedSubOpt) {
+        String subOpt = null;
+        switch (typedSubOpt) {
+            case "MAT":
+                subOpt = OptSubjects.MAT.toString();
+                break;
+            case "PHY":
+                subOpt = OptSubjects.PHY.toString();
+                break;
+            case "HIS":
+                subOpt = OptSubjects.HIS.toString();
+                break;
+            case "GEO":
+                subOpt = OptSubjects.GEO.toString();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + typedSubOpt);
+        }
+        return subOpt;
     }
 
     public static void handleTeacher() {
@@ -60,60 +85,78 @@ public class Main {
             System.out.println("You were successfully recognized as a teacher. " +
                     "You can fill in the student's results.");
             String[] stComplName = greetings("student's");
-            System.out.println("Type student's exact class [A/B/C]: ");
+            System.out.println("Type student's exact class [A][B][C]: ");
             String className = readUserString();
 
-            System.out.println("Type name of student's 1st exam subject:");
-            String sub1 = readUserString();
+            System.out.println("1. The first mandatory subject is: " + Languages.CZE);
+            String subCze = Languages.CZE.toString();
 
-            System.out.println("Type name of student's 2nd exam subject:");
-            String sub2 = readUserString();
+            System.out.println("2. Type name of student's foreign language subject: [ENG][GER][FRE]");
+            String typedLang = readUserString();
+            String subLang;
+            switch (typedLang) {
+                case "ENG":
+                    subLang = Languages.ENG.toString();
+                    break;
+                case "GER":
+                    subLang = Languages.GER.toString();
+                    break;
+                case "FRE":
+                    subLang = Languages.FRE.toString();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + typedLang);
+            }
 
-            System.out.println("Type name of student's 3rd exam subject:");
-            String sub3 = readUserString();
+            System.out.println("3. Type name of student's 1st optional subject: [MAT][PHY][HIS][GEO]");
+            String typedSubOpt1 = readUserString();
+            String subOpt1 = getOptionSub(typedSubOpt1);
 
-            System.out.println("Type name of student's 4th exam subject:");
-            String sub4 = readUserString();
+            System.out.println("4. Type name of student's 2nd optional subject: [MAT][PHY][HIS][GEO]");
+            String typedSubOpt2 = readUserString();
+            String subOpt2 = getOptionSub(typedSubOpt2);
 
-            System.out.println("Type student's grade from " + sub1 + ":");
-            Integer sub1Grade = Integer.valueOf(readUserString());
+            System.out.println("Type student's grade from " + subCze + ":");
+            Integer subCzeGrade = Integer.valueOf(readUserString());
 
-            System.out.println("Type student's grade from " + sub2 + ":");
-            Integer sub2Grade = Integer.valueOf(readUserString());
+            System.out.println("Type student's grade from " + subLang + ":");
+            Integer subLangGrade = Integer.valueOf(readUserString());
 
-            System.out.println("Type student's grade from " + sub3 + ":");
-            Integer sub3Grade = Integer.valueOf(readUserString());
+            System.out.println("Type student's grade from " + subOpt1 + ":");
+            Integer subOpt1Grade = Integer.valueOf(readUserString());
 
-            System.out.println("Type student's grade from " + sub4 + ":");
-            Integer sub4Grade = Integer.valueOf(readUserString());
+            System.out.println("Type student's grade from " + subOpt2 + ":");
+            Integer subOptGrade = Integer.valueOf(readUserString());
 
             HashMap<String, Integer> stResultsMap = new HashMap<>();
-            stResultsMap.put(sub1, sub1Grade);
-            stResultsMap.put(sub2, sub2Grade);
-            stResultsMap.put(sub3, sub3Grade);
-            stResultsMap.put(sub4, sub4Grade);
+            stResultsMap.put(subCze, subCzeGrade);
+            stResultsMap.put(subLang, subLangGrade);
+            stResultsMap.put(subOpt1, subOpt1Grade);
+            stResultsMap.put(subOpt2, subOptGrade);
 
             GradExams result = new GradExams(stComplName[0], stComplName[1], className,
                     stResultsMap);
-            System.out.println("The results have been successfully filled in. Thank you");
+            System.out.println("The results have been filled successfuly. Thank you");
             System.out.println("========================================================");
             System.out.println("Recapitulation:");
             System.out.println("========================================================");
             System.out.println("Student " + result.getName() + " " + result.getSurname() + " from 4." +
                     result.getClassName() + ":");
-            for (Map.Entry<String, Integer> mapEntry:stResultsMap.entrySet()){
+            System.out.println("Subject : Grade");
+            System.out.println("--------------------------------------------------------");
+            for (Map.Entry<String, Integer> mapEntry : stResultsMap.entrySet()) {
                 String key = mapEntry.getKey();
                 Integer value = mapEntry.getValue();
-                System.out.println(result.getGrades() + " : " + result.getGrades().get(sub1));
+                System.out.println(key + " : " + value);
             }
-
-
+            System.out.println("========================================================");
 
             if (result.getGrades().containsValue(5)) {
                 System.out.println("Student failed in graduation.");
-            }
-
-
+            } else
+                System.out.println("Student passed successfully.");
+            System.out.println("========================================================");
+            System.out.println();
             System.out.println("Do you want to start application again? [yes/no]");
             String continueChoice = readUserString();
             if (continueChoice.equals("yes")) {
@@ -142,6 +185,7 @@ public class Main {
 
         System.out.println("*************** Graduation Exam Results ***************");
         chooseRole();
+        System.out.println();
         System.out.println("*************** end of Graduation Exam Results mini-application *************** ");
     }
 }
