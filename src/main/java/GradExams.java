@@ -1,21 +1,19 @@
 
 import java.util.HashMap;
 
-public class GraduationExams {
+public class GradExams {
 
     private String name;
     private String surname;
-    private String subject;
-    private int[] grades;
+    private String className;
+    private HashMap<String, Integer> grades;
 
-        public GraduationExams(String name, String surname, String subject) {
+    public GradExams(String name, String surname, String className, HashMap<String, Integer> grades) {
         this.name = name;
         this.surname = surname;
-        this.subject = subject;
-
+        this.className = className;
+        this.grades = setGrades(grades);
     }
-
-
 
     public String getName() {
         return name;
@@ -33,20 +31,20 @@ public class GraduationExams {
         this.surname = surname;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getClassName() {
+        return className;
     }
 
     public void setSubject(String subject) {
-        this.subject = subject;
+        this.className = subject;
     }
 
-    public int[] getGrades() {
+    public HashMap<String, Integer> getGrades() {
         return grades;
     }
 
-    public int[] setGrades(int[] grades) {
+    public HashMap<String, Integer> setGrades(HashMap<String, Integer> grades) {
         this.grades = grades;
-    return grades;
+        return grades;
     }
 }
